@@ -1,0 +1,1370 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="灵犀探秘 - 多模态防偷拍智能安全设备，守护你的隐私安全">
+  <title>灵犀探秘 · 多模态防偷拍智能设备</title>
+  <link rel="preconnect" href="https://fonts.googleapis.cn">
+  <link rel="preconnect" href="https://fonts.gstatic.cn" crossorigin>
+  <link href="https://fonts.googleapis.cn/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #0a1628;
+      --primary-light: #132040;
+      --secondary: #1e3a5f;
+      --accent: #00ff88;
+      --accent-glow: rgba(0, 255, 136, 0.3);
+      --accent-dim: #00cc6a;
+      --warning: #ff6b35;
+      --text-primary: #ffffff;
+      --text-secondary: rgba(255, 255, 255, 0.7);
+      --text-muted: rgba(255, 255, 255, 0.5);
+      --card-bg: rgba(30, 58, 95, 0.4);
+      --card-border: rgba(0, 255, 136, 0.15);
+      --gradient-hero: linear-gradient(135deg, #0a1628 0%, #132040 50%, #1e3a5f 100%);
+      --gradient-glow: radial-gradient(ellipse at center, rgba(0, 255, 136, 0.1) 0%, transparent 70%);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Noto Sans SC', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* Navigation */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      background: rgba(10, 22, 40, 0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--card-border);
+      transition: all 0.3s ease;
+    }
+
+    .nav.scrolled {
+      background: rgba(10, 22, 40, 0.95);
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+      height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--text-primary);
+    }
+
+    .nav-logo {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dim) 100%);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 18px;
+      color: var(--primary);
+    }
+
+    .nav-title {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      list-style: none;
+    }
+
+    .nav-link {
+      color: var(--text-secondary);
+      text-decoration: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+
+    .nav-link:hover {
+      color: var(--text-primary);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .nav-cta {
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dim) 100%);
+      color: var(--primary);
+      padding: 10px 24px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 14px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px var(--accent-glow);
+    }
+
+    .nav-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 25px var(--accent-glow);
+    }
+
+    .nav-toggle {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 8px;
+    }
+
+    .nav-toggle span {
+      width: 24px;
+      height: 2px;
+      background: var(--text-primary);
+      transition: all 0.3s ease;
+    }
+
+    /* Hero Section */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 120px 24px 80px;
+      position: relative;
+      overflow: hidden;
+      background: var(--gradient-hero);
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: var(--gradient-glow);
+      pointer-events: none;
+    }
+
+    .hero-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-content {
+      animation: fadeInUp 0.8s ease-out;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(0, 255, 136, 0.1);
+      border: 1px solid var(--card-border);
+      padding: 8px 16px;
+      border-radius: 50px;
+      font-size: 13px;
+      color: var(--accent);
+      margin-bottom: 24px;
+    }
+
+    .hero-badge::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      background: var(--accent);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.2); }
+    }
+
+    .hero-title {
+      font-size: clamp(32px, 5vw, 48px);
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 16px;
+      letter-spacing: -0.02em;
+    }
+
+    .hero-title-accent {
+      background: linear-gradient(135deg, var(--accent) 0%, #00cc6a 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-subtitle {
+      font-size: clamp(20px, 3vw, 28px);
+      font-weight: 600;
+      color: var(--warning);
+      margin-bottom: 16px;
+    }
+
+    .hero-desc {
+      font-size: 16px;
+      color: var(--text-secondary);
+      margin-bottom: 32px;
+      max-width: 480px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 28px;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dim) 100%);
+      color: var(--primary);
+      box-shadow: 0 4px 20px var(--accent-glow);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px var(--accent-glow);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-primary);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .hero-visual {
+      position: relative;
+      animation: fadeInUp 0.8s ease-out 0.2s both;
+    }
+
+    .hero-image {
+      width: 100%;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+    }
+
+    .hero-glow {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 80%;
+      height: 80%;
+      background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+      filter: blur(60px);
+      z-index: -1;
+    }
+
+    /* Section Styles */
+    .section {
+      padding: 100px 24px;
+      position: relative;
+    }
+
+    .section-dark {
+      background: var(--primary);
+    }
+
+    .section-gradient {
+      background: linear-gradient(180deg, var(--primary) 0%, var(--primary-light) 50%, var(--primary) 100%);
+    }
+
+    .section-container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+
+    .section-label {
+      display: inline-block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-size: clamp(28px, 4vw, 40px);
+      font-weight: 700;
+      margin-bottom: 16px;
+      letter-spacing: -0.02em;
+    }
+
+    .section-desc {
+      font-size: 16px;
+      color: var(--text-secondary);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* Features Grid */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 24px;
+    }
+
+    .feature-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 32px;
+      display: flex;
+      gap: 24px;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+    }
+
+    .feature-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(0, 255, 136, 0.3);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    .feature-icon {
+      width: 80px;
+      height: 80px;
+      border-radius: 12px;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .feature-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .feature-content h3 {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .feature-content p {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    /* Tech Grid */
+    .tech-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 24px;
+    }
+
+    .tech-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 32px 24px;
+      text-align: center;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+    }
+
+    .tech-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(0, 255, 136, 0.3);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    .tech-icon {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 20px;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .tech-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .tech-card h3 {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .tech-card p {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* Scenes Grid */
+    .scenes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 24px;
+    }
+
+    .scene-card {
+      position: relative;
+      border-radius: 16px;
+      overflow: hidden;
+      aspect-ratio: 16/10;
+      cursor: pointer;
+    }
+
+    .scene-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .scene-card:hover img {
+      transform: scale(1.08);
+    }
+
+    .scene-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(10, 22, 40, 0.9) 0%, transparent 60%);
+      display: flex;
+      align-items: flex-end;
+      padding: 24px;
+    }
+
+    .scene-label {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    /* About Section */
+    .about-content {
+      max-width: 800px;
+      margin: 0 auto;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 48px;
+      backdrop-filter: blur(10px);
+    }
+
+    .about-text {
+      font-size: 16px;
+      color: var(--text-secondary);
+      line-height: 2;
+    }
+
+    .about-highlights {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 24px;
+      margin-top: 40px;
+      padding-top: 40px;
+      border-top: 1px solid var(--card-border);
+    }
+
+    .highlight-item {
+      text-align: center;
+    }
+
+    .highlight-value {
+      font-size: 36px;
+      font-weight: 800;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+
+    .highlight-label {
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    /* Footer */
+    .footer {
+      background: var(--primary);
+      border-top: 1px solid var(--card-border);
+      padding: 60px 24px 30px;
+    }
+
+    .footer-container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .footer-main {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 60px;
+      padding-bottom: 40px;
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    .footer-brand {
+      max-width: 300px;
+    }
+
+    .footer-brand .nav-brand {
+      margin-bottom: 16px;
+    }
+
+    .footer-desc {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    .footer-section h4 {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 20px;
+    }
+
+    .footer-links {
+      list-style: none;
+    }
+
+    .footer-links li {
+      margin-bottom: 12px;
+    }
+
+    .footer-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 0.2s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--accent);
+    }
+
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 30px;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .footer-copyright {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .footer-legal {
+      display: flex;
+      gap: 24px;
+    }
+
+    .footer-legal a {
+      font-size: 13px;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .footer-legal a:hover {
+      color: var(--text-secondary);
+    }
+
+    /* Mobile Styles */
+    @media (max-width: 768px) {
+      .nav-links {
+        position: fixed;
+        top: 72px;
+        left: 0;
+        right: 0;
+        background: rgba(10, 22, 40, 0.98);
+        backdrop-filter: blur(20px);
+        flex-direction: column;
+        padding: 24px;
+        gap: 8px;
+        transform: translateY(-100%);
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+        border-bottom: 1px solid var(--card-border);
+      }
+
+      .nav-links.active {
+        transform: translateY(0);
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .nav-cta {
+        display: none;
+      }
+
+      .nav-toggle {
+        display: flex;
+      }
+
+      .nav-toggle.active span:nth-child(1) {
+        transform: rotate(45deg) translate(5px, 5px);
+      }
+
+      .nav-toggle.active span:nth-child(2) {
+        opacity: 0;
+      }
+
+      .nav-toggle.active span:nth-child(3) {
+        transform: rotate(-45deg) translate(5px, -5px);
+      }
+
+      .hero-container {
+        grid-template-columns: 1fr;
+        gap: 40px;
+        text-align: center;
+      }
+
+      .hero-content {
+        order: 2;
+      }
+
+      .hero-visual {
+        order: 1;
+      }
+
+      .hero-desc {
+        margin: 0 auto 32px;
+      }
+
+      .hero-actions {
+        justify-content: center;
+      }
+
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .feature-card {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .feature-icon {
+        margin: 0 auto;
+      }
+
+      .tech-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .scenes-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .about-content {
+        padding: 32px 24px;
+      }
+
+      .about-highlights {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .footer-main {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .section {
+        padding: 60px 16px;
+      }
+
+      .hero {
+        padding: 100px 16px 60px;
+      }
+
+      .tech-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .about-highlights {
+        grid-template-columns: 1fr;
+      }
+
+      .btn {
+        padding: 12px 20px;
+        font-size: 14px;
+      }
+    }
+
+    /* Scroll animations */
+    .animate-on-scroll {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.6s ease-out;
+    }
+
+    .animate-on-scroll.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    body.intro-lock {
+      overflow: hidden;
+    }
+
+    .intro-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 99999;
+      background: var(--gradient-hero);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      opacity: 1;
+      transition: opacity 0.8s ease;
+    }
+
+    .intro-screen.hide {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .intro-screen::before {
+      content: '';
+      position: absolute;
+      inset: -25%;
+      background: radial-gradient(circle, rgba(0, 255, 136, 0.22) 0%, rgba(0, 255, 136, 0.08) 28%, transparent 58%);
+      animation: introGlow 2.2s ease-in-out infinite alternate;
+    }
+
+    .intro-screen::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: linear-gradient(rgba(0, 255, 136, 0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 255, 136, 0.06) 1px, transparent 1px);
+      background-size: 46px 46px;
+      opacity: 0.5;
+      pointer-events: none;
+    }
+
+    .intro-radar {
+      position: absolute;
+      width: min(72vw, 520px);
+      aspect-ratio: 1;
+      border: 1px solid rgba(0, 255, 136, 0.22);
+      border-radius: 50%;
+      box-shadow: 0 0 70px rgba(0, 255, 136, 0.18), inset 0 0 45px rgba(0, 255, 136, 0.08);
+      animation: introRadar 2.4s ease-out forwards;
+    }
+
+    .intro-radar::before,
+    .intro-radar::after {
+      content: '';
+      position: absolute;
+      inset: 16%;
+      border: 1px solid rgba(0, 255, 136, 0.18);
+      border-radius: 50%;
+    }
+
+    .intro-radar::after {
+      inset: 32%;
+    }
+
+    .intro-scan-line {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: -18%;
+      height: 18%;
+      background: linear-gradient(180deg, transparent 0%, rgba(0, 255, 136, 0.04) 30%, rgba(0, 255, 136, 0.45) 100%);
+      filter: drop-shadow(0 0 18px rgba(0, 255, 136, 0.6));
+      animation: introScan 2.2s ease-in-out forwards;
+    }
+
+    .intro-content {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      animation: introContentIn 0.7s ease forwards;
+    }
+
+    .intro-logo {
+      width: 72px;
+      height: 72px;
+      margin: 0 auto 18px;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dim) 100%);
+      color: var(--primary);
+      font-size: 34px;
+      font-weight: 800;
+      box-shadow: 0 0 36px var(--accent-glow);
+    }
+
+    .intro-title {
+      font-size: clamp(28px, 5vw, 48px);
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      margin-bottom: 8px;
+    }
+
+    .intro-subtitle {
+      color: var(--text-secondary);
+      font-size: 15px;
+      letter-spacing: 0.18em;
+      margin-bottom: 24px;
+    }
+
+    .intro-progress {
+      width: 220px;
+      height: 2px;
+      margin: 0 auto;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.14);
+      border-radius: 999px;
+    }
+
+    .intro-progress span {
+      display: block;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      animation: introProgress 1.7s ease-in-out forwards;
+    }
+
+    .intro-screen.exit .intro-content {
+      animation: introContentOut 0.5s ease forwards;
+    }
+
+    @keyframes introGlow {
+      from { transform: scale(0.92); opacity: 0.7; }
+      to { transform: scale(1.05); opacity: 1; }
+    }
+
+    @keyframes introRadar {
+      0% { transform: scale(0.72); opacity: 0; }
+      35% { opacity: 1; }
+      100% { transform: scale(1.08); opacity: 0.55; }
+    }
+
+    @keyframes introScan {
+      0% { transform: translateY(0); opacity: 0; }
+      15% { opacity: 1; }
+      100% { transform: translateY(760%); opacity: 0; }
+    }
+
+    @keyframes introContentIn {
+      from { opacity: 0; transform: translateY(18px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    @keyframes introContentOut {
+      to { opacity: 0; transform: translateY(-12px) scale(0.98); }
+    }
+
+    @keyframes introProgress {
+      from { transform: translateX(-100%); }
+      to { transform: translateX(100%); }
+    }
+  </style>
+</head>
+<body>
+  <div class="intro-screen" id="introScreen">
+    <div class="intro-radar"></div>
+    <div class="intro-scan-line"></div>
+    <div class="intro-content">
+      <div class="intro-logo">犀</div>
+      <div class="intro-title">灵犀探秘</div>
+      <div class="intro-subtitle">隐私安全扫描中</div>
+      <div class="intro-progress"><span></span></div>
+    </div>
+  </div>
+  <!-- Navigation -->
+  <nav class="nav" id="navbar">
+    <div class="nav-container">
+      <a href="#" class="nav-brand">
+        <div class="nav-logo">犀</div>
+        <span class="nav-title">灵犀探秘</span>
+      </a>
+      
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#home" class="nav-link">首页</a></li>
+        <li><a href="#tech" class="nav-link">核心技术</a></li>
+        <li><a href="#features" class="nav-link">产品亮点</a></li>
+        <li><a href="#scenes" class="nav-link">场景应用</a></li>
+        <li><a href="#about" class="nav-link">关于我们</a></li>
+      </ul>
+      
+      <a href="#contact" class="nav-cta">立即咨询</a>
+      
+      <div class="nav-toggle" id="navToggle">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero" id="home">
+    <div class="hero-container">
+      <div class="hero-content">
+        <div class="hero-badge">
+          <span>新一代隐私防护设备</span>
+        </div>
+        <h1 class="hero-title">
+          灵犀探秘 · <span class="hero-title-accent">多模态防偷拍</span>智能设备
+        </h1>
+        <p class="hero-subtitle">你的隐私，不该被标价！</p>
+        <p class="hero-desc">
+          集检测、定位、报警于一体的随身隐私安全卫士。采用五大前沿技术，守护你的每一刻隐私安全。
+        </p>
+        <div class="hero-actions">
+          <a href="#contact" class="btn btn-primary">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+              <line x1="16" y1="2" x2="16" y2="6"></line>
+              <line x1="8" y1="2" x2="8" y2="6"></line>
+              <line x1="3" y1="10" x2="21" y2="10"></line>
+            </svg>
+            预约体验
+          </a>
+          <a href="#features" class="btn btn-secondary">
+            了解更多
+          </a>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="hero-glow"></div>
+        <img src="首页第一张图.png" 
+             alt="灵犀探秘智能设备" 
+             class="hero-image"
+             loading="eager">
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="section section-gradient" id="features">
+    <div class="section-container">
+      <div class="section-header">
+        <span class="section-label">Product Features</span>
+        <h2 class="section-title">产品亮点</h2>
+        <p class="section-desc">五大核心功能，全方位守护您的隐私安全</p>
+      </div>
+      
+      <div class="features-grid">
+        <div class="feature-card animate-on-scroll">
+          <div class="feature-icon">
+            <img src="超小便捷.png" alt="超小便携">
+          </div>
+          <div class="feature-content">
+            <h3>超小便携</h3>
+            <p>40×40×15mm，约150g，如耳机般大小。Type-C供电，随时随地携带，隐形守护你的每一次出行。</p>
+          </div>
+        </div>
+        
+        <div class="feature-card animate-on-scroll">
+          <div class="feature-icon">
+            <img src="全自动扫描.png" alt="全自动扫描">
+          </div>
+          <div class="feature-content">
+            <h3>全自动扫描</h3>
+            <p>可折叠伸缩支架，360°旋转，APP远程控制。3分钟完成全屋无死角扫描，智能高效。</p>
+          </div>
+        </div>
+        
+        <div class="feature-card animate-on-scroll">
+          <div class="feature-icon">
+            <img src="APP实景定位.png" alt="APP实景定位">
+          </div>
+          <div class="feature-content">
+            <h3>APP实景定位</h3>
+            <p>扫描生成可视化结果+虚拟路线，引导用户精准找到偷拍设备。定位精度高达厘米级。</p>
+          </div>
+        </div>
+        
+        <div class="feature-card animate-on-scroll">
+          <div class="feature-icon">
+            <img src="一键紧急报警.png" alt="一键紧急报警">
+          </div>
+          <div class="feature-content">
+            <h3>一键紧急报警</h3>
+            <p>130分贝警报，BLE+GPS精准定位。自动发送位置给紧急联系人与就近警局，守护你的人身安全。</p>
+          </div>
+        </div>
+        
+        <div class="feature-card animate-on-scroll">
+          <div class="feature-icon">
+            <img src="离线位置缓存.png" alt="离线位置缓存">
+          </div>
+          <div class="feature-content">
+            <h3>离线位置缓存</h3>
+            <p>无网络也能存储位置，联网自动补发。即使在信号盲区，救援也不会中断。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tech Section -->
+  <section class="section section-dark" id="tech">
+    <div class="section-container">
+      <div class="section-header">
+        <span class="section-label">Core Technology</span>
+        <h2 class="section-title">核心技术</h2>
+        <p class="section-desc">五大前沿技术融合，构建全方位检测体系</p>
+      </div>
+      
+      <div class="tech-grid">
+        <div class="tech-card animate-on-scroll">
+          <div class="tech-icon">
+            <img src="红外脉冲光.png" alt="脉冲光技术">
+          </div>
+          <h3>脉冲光技术</h3>
+          <p>850nm红外脉冲光，提升检测灵敏度，隐蔽式扫描</p>
+        </div>
+        
+        <div class="tech-card animate-on-scroll">
+          <div class="tech-icon">
+            <img src="光谱分析.webp" alt="光谱分析技术">
+          </div>
+          <h3>光谱分析技术</h3>
+          <p>380-1000nm全光谱，识别镜头材质，未开机也可检测</p>
+        </div>
+        
+        <div class="tech-card animate-on-scroll">
+          <div class="tech-icon">
+            <img src="ai智能识别.png" alt="AI智能识别">
+          </div>
+          <h3>AI智能识别</h3>
+          <p>深度学习算法，复杂场景精准识别，极低误报率</p>
+        </div>
+        
+        <div class="tech-card animate-on-scroll">
+          <div class="tech-icon">
+            <img src="射频扫描.png" alt="射频探测">
+          </div>
+          <h3>射频探测</h3>
+          <p>覆盖800MHz-6GHz，检测WiFi/4G/5G无线传输型偷拍设备</p>
+        </div>
+        
+        <div class="tech-card animate-on-scroll">
+          <div class="tech-icon">
+            <img src="电磁频谱.jpg" alt="电磁频谱分析">
+          </div>
+          <h3>电磁频谱分析</h3>
+          <p>10kHz-1GHz，捕捉电源与视频信号，增强金属外壳设备探测</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Scenes Section -->
+  <section class="section section-gradient" id="scenes">
+    <div class="section-container">
+      <div class="section-header">
+        <span class="section-label">Application Scenarios</span>
+        <h2 class="section-title">场景应用</h2>
+        <p class="section-desc">全场景覆盖，随时随地守护您的隐私安全</p>
+      </div>
+      
+      <div class="scenes-grid">
+        <div class="scene-card animate-on-scroll">
+          <img src="酒店扫描.png" alt="酒店入住">
+          <div class="scene-overlay">
+            <span class="scene-label">酒店入住</span>
+          </div>
+        </div>
+        
+        <div class="scene-card animate-on-scroll">
+          <img src="民宿出行.png" alt="民宿出行">
+          <div class="scene-overlay">
+            <span class="scene-label">民宿出行</span>
+          </div>
+        </div>
+        
+        <div class="scene-card animate-on-scroll">
+          <img src="租房自检.png" alt="租房自检">
+          <div class="scene-overlay">
+            <span class="scene-label">租房自检</span>
+          </div>
+        </div>
+        
+        <div class="scene-card animate-on-scroll">
+          <img src="商务会议室.png" alt="商务会议室">
+          <div class="scene-overlay">
+            <span class="scene-label">商务会议室</span>
+          </div>
+        </div>
+        
+        <div class="scene-card animate-on-scroll">
+          <img src="独居安全.png" alt="独居安全">
+          <div class="scene-overlay">
+            <span class="scene-label">独居安全</span>
+          </div>
+        </div>
+        
+        <div class="scene-card animate-on-scroll">
+          <img src="一键紧急报警.png" alt="夜间独行">
+          <div class="scene-overlay">
+            <span class="scene-label">夜间独行</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section class="section section-dark" id="about">
+    <div class="section-container">
+      <div class="section-header">
+        <span class="section-label">About Us</span>
+        <h2 class="section-title">关于我们</h2>
+        <p class="section-desc">用科技创新守护每一份隐私</p>
+      </div>
+      
+      <div class="about-content animate-on-scroll">
+        <p class="about-text">
+          本项目为大学生创新创业大赛参赛项目，团队由高校在校学生组成，专注隐私安全与智能硬件研发。针对微型偷拍设备泛滥、传统检测手段低效、独居与商旅人群安全需求强烈等社会痛点，研发集多模态检测、AI识别、精准定位、紧急报警于一体的智能防偷拍设备。
+        </p>
+        <p class="about-text">
+          项目融合脉冲光、光谱分析、AI边缘计算、射频探测、电磁频谱分析五大技术，致力于为个人与公共场所提供低成本、高效率、易操作的一站式隐私安全防护方案，守护用户隐私与人身安全。
+        </p>
+        
+        <div class="about-highlights">
+          <div class="highlight-item">
+            <div class="highlight-value">5+</div>
+            <div class="highlight-label">前沿技术融合</div>
+          </div>
+          <div class="highlight-item">
+            <div class="highlight-value">cm级</div>
+            <div class="highlight-label">精准定位精度</div>
+          </div>
+          <div class="highlight-item">
+            <div class="highlight-value">3min</div>
+            <div class="highlight-label">全屋扫描速度</div>
+          </div>
+          <div class="highlight-item">
+            <div class="highlight-value">130dB</div>
+            <div class="highlight-label">紧急报警音量</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer" id="contact">
+    <div class="footer-container">
+      <div class="footer-main">
+        <div class="footer-brand">
+          <a href="#" class="nav-brand">
+            <div class="nav-logo">犀</div>
+            <span class="nav-title">灵犀探秘</span>
+          </a>
+          <p class="footer-desc">
+            灵犀探秘致力于用科技创新守护每一份隐私，为个人与公共场所提供全方位的隐私安全防护方案。
+          </p>
+        </div>
+        
+        <div class="footer-section">
+          <h4>快速链接</h4>
+          <ul class="footer-links">
+            <li><a href="#home">首页</a></li>
+            <li><a href="#tech">核心技术</a></li>
+            <li><a href="#features">产品亮点</a></li>
+            <li><a href="#scenes">场景应用</a></li>
+            <li><a href="#about">关于我们</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-section">
+          <h4>联系我们</h4>
+          <ul class="footer-links">
+            <li><a href="mailto:qiujade@outlook.com">qiujade@outlook.com</a></li>
+            <li><a href="#">商务合作洽谈</a></li>
+            <li><a href="#">媒体采访邀请</a></li>
+            <li><a href="#">加入我们的团队</a></li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p class="footer-copyright">
+          灵犀探秘 © 2026 大学生创新创业项目 · 守护隐私安全
+        </p>
+        <div class="footer-legal">
+          <a href="#">隐私政策</a>
+          <a href="#">使用条款</a>
+          <a href="#">安全说明</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.body.classList.add('intro-lock');
+
+    const introScreen = document.getElementById('introScreen');
+
+    function finishIntro() {
+      if (!introScreen || introScreen.classList.contains('hide')) return;
+
+      introScreen.classList.add('exit');
+
+      setTimeout(() => {
+        introScreen.classList.add('hide');
+        document.body.classList.remove('intro-lock');
+      }, 450);
+
+      setTimeout(() => {
+        introScreen.remove();
+      }, 1300);
+    }
+
+    window.addEventListener('load', () => {
+      setTimeout(finishIntro, 1800);
+    });
+
+    // Mobile navigation toggle
+    const navToggle = document.getElementById('navToggle');
+    const navLinks = document.getElementById('navLinks');
+    
+    navToggle.addEventListener('click', () => {
+      navToggle.classList.toggle('active');
+      navLinks.classList.toggle('active');
+    });
+
+    // Close mobile menu when clicking a link
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', () => {
+        navToggle.classList.remove('active');
+        navLinks.classList.remove('active');
+      });
+    });
+
+    // Navbar scroll effect
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    });
+
+    // Scroll animations
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.1
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('.animate-on-scroll').forEach(el => {
+      observer.observe(el);
+    });
+
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
